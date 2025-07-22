@@ -3,13 +3,12 @@ package com.example.rickandmortyworkmate.screens
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.rickandmortyworkmate.presentation.ViewModel
-import com.example.rickandmortyworkmate.state.PersonsUIState
+import com.example.rickandmortyworkmate.state.UIState
 
 @Composable
 fun HomeScreen(
@@ -26,11 +25,11 @@ fun HomeScreen(
         {
             val viewState = viewModel.personState.collectAsStateWithLifecycle()
             when (val state = viewState.value) {
-                is PersonsUIState.Loading -> LoadingScreen()
-                is PersonsUIState.Success -> PersonsGridScreen(
+                is UIState.Loading -> LoadingScreen()
+                is UIState.PersonSuccess -> PersonsGridScreen(
                     pers = state.personsSearch, onDetailsClicked
                 )
-                is PersonsUIState.Error -> ErrorScreen(state.message)
+                is UIState.Error -> ErrorScreen(state.message)
                 else -> {}
             }
         }

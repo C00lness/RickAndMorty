@@ -20,17 +20,29 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.domain.entities.Details
 import com.example.rickandmortyworkmate.R
+import com.example.rickandmortyworkmate.presentation.ViewModel
+import com.example.rickandmortyworkmate.state.UIState
 import com.example.rickandmortyworkmate.ui.theme.myGreen
 
 @Composable
-fun DetailsScreen(details: Details?) {
-    Column(modifier = Modifier.padding(top = 20.dp, start = 5.dp), horizontalAlignment = Alignment.CenterHorizontally)
+fun DetailsScreen(viewModel:ViewModel) {
+    Column(
+        modifier = Modifier.padding(top = 20.dp, start = 5.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    )
     {
-        ImageWithTextInMiddle(details)
+        val viewState = viewModel.detailsState.collectAsStateWithLifecycle()
+        when (val state = viewState.value) {
+            is UIState.Loading -> LoadingScreen()
+            is UIState.DetailsSuccess -> ImageWithTextInMiddle(details = state.details)
+            is UIState.Error -> ErrorScreen(state.message)
+            else -> {}
+        }
     }
 }
 

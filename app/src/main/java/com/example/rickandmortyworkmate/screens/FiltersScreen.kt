@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.rickandmortyworkmate.presentation.ViewModel
-import com.example.rickandmortyworkmate.state.FilterUIState
+import com.example.rickandmortyworkmate.state.UIState
 import com.example.rickandmortyworkmate.ui.theme.myBrown
 import com.example.rickandmortyworkmate.ui.theme.myGreen
 
@@ -49,11 +49,11 @@ fun FilterScreen(
         {
             val viewState = viewModel.filterState.collectAsStateWithLifecycle()
             when (val state = viewState.value) {
-                is FilterUIState.Loading -> LoadingScreen()
-                is FilterUIState.Success -> PersonsGridScreen(
+                is UIState.Loading -> LoadingScreen()
+                is UIState.FilterSuccess -> PersonsGridScreen(
                     pers = state.filterSearch, onDetailsClicked
                 )
-                is FilterUIState.Error -> ErrorScreen(state.message)
+                is UIState.Error -> ErrorScreen(state.message)
                 else -> {}
             }
         }

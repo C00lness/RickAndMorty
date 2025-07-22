@@ -40,15 +40,12 @@ class MainActivity : ComponentActivity() {
                     composable(DetailsDestination.route + "/{$INDEX}") { entry ->
                         val index = entry.arguments?.getString(INDEX)
                         viewModel.getDetails(index.toString())
-                        DetailsScreen(viewModel.detailsState.value)
+                        DetailsScreen(viewModel)
                     }
 
                     composable(FilterPageDestination.route) { entry ->
-                        //val index = entry.arguments?.getString(INDEX)
-                        //viewModel.getDetails(index.toString())
                         FilterScreen (viewModel,
-                            onDetailsClicked = { entry ->
-                                navController.navigateSingleTopTo(DetailsDestination.route + entry)},
+                            onDetailsClicked = { navController.navigateSingleTopTo(DetailsDestination.route + entry)},
                             onFilterClicked = { navController.navigate(FilterPageDestination.route)},
                             onBackClicked = { navController.navigate(HomePageDestination.route)})
                     }
@@ -57,7 +54,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    fun NavHostController.navigateSingleTopTo(route: String) = this.navigate(route) {
+    private fun NavHostController.navigateSingleTopTo(route: String) = this.navigate(route) {
         launchSingleTop = true
     }
 }
